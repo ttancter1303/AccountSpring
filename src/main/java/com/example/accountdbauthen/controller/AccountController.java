@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -24,7 +26,7 @@ public class AccountController {
     public boolean doesUserExist(String username) {
         return accountRepository.findByUsername(username) != null;
     }
-    @PostMapping("save")
+    @PostMapping("/save")
     public ResponseEntity save (@RequestBody Account account){
         String password2 = new BCryptPasswordEncoder().encode(account.getPassword());
         account.setPassword(password2);
@@ -44,6 +46,7 @@ public class AccountController {
         accountDB.setUpdateAt(account.getUpdateAt());
         accountDB.setPassword(account.getPassword());
         accountDB.setFullName(account.getFullName());
+        accountDB.setUpdateAt(account.getUpdateAt());
         accountRepository.save(accountDB);
         return new ResponseEntity<>("Account updated successfully", HttpStatus.OK);
     }
